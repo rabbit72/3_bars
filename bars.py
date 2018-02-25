@@ -1,22 +1,29 @@
 import json
 import sys
 import re
+from functools import reduce
 
-# PATH_TO_SEATS_COUNT = ['features']['properties']['Attributes']['SeatsCount']
+
 AVAILABLE_COMMANDS = ['1', '2', '3', 'exit']
 
 
 def load_data(file_path):
-    with open(file_path) as file_data:
+    with open(file_path, encoding='utf8') as file_data:
         return json.loads(file_data.read())
 
 
 def get_biggest_bar(data):
-    pass
+    return min(
+        data['features'],
+        key=lambda x: x['properties']['Attributes']['SeatsCount']
+    )
 
 
 def get_smallest_bar(data):
-    pass
+    return max(
+        data['features'],
+        key=lambda x: x['properties']['Attributes']['SeatsCount']
+    )
 
 
 def get_closest_bar(data, longitude, latitude):
@@ -49,23 +56,23 @@ def get_user_coordinates(*arg):
     return tuple(coordinate_list)
 
 
-def processing_choose(user_choose):
+def processing_choose(user_choose, bars_data):
     if user_choose == 'exit':
         return None
     elif user_choose == '1':
-        return get_biggest_bar(bar_data)
+        return get_biggest_bar(bars_data)
     elif user_choose == '2':
-        return get_smallest_bar(bar_data)
+        return get_smallest_bar(bars_data)
     elif user_choose == '3':
         longitude, latitude = get_user_coordinates('longitude', 'latitude')
-        return get_closest_bar(bar_data, longitude, latitude)
+        return get_closest_bar(bars_data, longitude, latitude)
 
 
 if __name__ == '__main__':
     try:
         path_bar_data = input('Enter path to file: ')
-        bar_data = load_data(path_bar_data)
-        necessary_bar = processing_choose(get_user_choose())
+        bars_data = load_data(path_bar_data)
+        necessary_bar = processing_choose(get_user_choose(), bars_data)
         if necessary_bar is None:
             sys.exit('Good bay! See you soon!')
         else:
