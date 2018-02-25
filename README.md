@@ -1,22 +1,39 @@
-# Ближайшие бары
+# Moscow bars
 
-[FIXME. Здесь будет описание проекта]
+This script use for search bars in Moscow.
 
-# Как запустить
+# How run
 
-Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
+*(Script for launch on Linux, Python 3.5)*
 
-Запуск на Linux:
+
+Run on Linux:
 
 ```bash
+$ python3 bars.py 
+```
+After running:
+1. Enter the path to the bars in JSON format
+1. Make a choice
+1. Look at the result
 
-$ python bars.py # possibly requires call of python3 executive instead of just python
-# FIXME вывести пример ответа скрипта
+Running on Windows is similar.
+*(Possibly requires call of 'python' executive instead of just 'python3'.)*
+
+# Example interface
+```
+Enter "1" - find the biggest bar in Moscow
+Enter "2" - find the smallest bar in Moscow
+Enter "3" - find the closest bar by gps coordinates
+Enter "q" - for log off the program
+Enter:
+```
+# Example output
 
 ```
+Name: Сушистор
+Address: город Москва, Михалковская улица, дом 8
+```
+# Project Goals
 
-Запуск на Windows происходит аналогично.
-
-# Цели проекта
-
-Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
+The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
