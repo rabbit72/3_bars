@@ -1,10 +1,9 @@
 import json
 import sys
 import re
-from functools import reduce
+from math import sqrt
 
-
-AVAILABLE_COMMANDS = ['1', '2', '3', 'exit']
+AVAILABLE_COMMANDS = ['1', '2', '3', 'q']
 
 
 def load_data(file_path):
@@ -26,8 +25,14 @@ def get_smallest_bar(data):
     )
 
 
-def get_closest_bar(data, longitude, latitude):
-    pass
+def get_closest_bar(data, user_latitude, user_longitude):
+    return min(
+        data['features'],
+        key=lambda x: sqrt(
+            (x['geometry']['coordinates'][1] - user_latitude) ** 2 +
+            (x['geometry']['coordinates'][0] - user_longitude) ** 2
+        )
+    )
 
 
 def get_user_choose():
@@ -35,13 +40,14 @@ def get_user_choose():
         'Enter "1" - find the biggest bar in Moscow\n'
         'Enter "2" - find the smallest bar in Moscow\n'
         'Enter "3" - find the closest bar by gps coordinates\n'
-        'Enter "exit" - for log off the program\n'
+        'Enter "q" - for log off the program\n'
         'Enter: '
     )
     while True:
         user_input = input(print_for_user)
         if user_input in AVAILABLE_COMMANDS:
             break
+        print('\nNot available commands. Try again.\n')
     return user_input
 
 
@@ -53,30 +59,42 @@ def get_user_coordinates(*arg):
             if not re.match('^\d+?\.\d+?$', coordinate) is None:
                 coordinate_list.append(float(coordinate))
                 break
+            print('\nCorrectly value format: **.*******\n')
     return tuple(coordinate_list)
 
 
 def processing_choose(user_choose, bars_data):
-    if user_choose == 'exit':
+    if user_choose == 'q':
         return None
     elif user_choose == '1':
         return get_biggest_bar(bars_data)
     elif user_choose == '2':
         return get_smallest_bar(bars_data)
     elif user_choose == '3':
-        longitude, latitude = get_user_coordinates('longitude', 'latitude')
+        longitude, latitude = get_user_coordinates('latitude', 'longitude')
         return get_closest_bar(bars_data, longitude, latitude)
+
+
+def print_answer(bar):
+    contacts = bar['properties']['Attributes']
+    print('-' * 50)
+    print('Name: {0}\nAddress: {1}'.format(
+        contacts['Name'],
+        contacts['Address']
+    ))
+    print('-' * 50)
 
 
 if __name__ == '__main__':
     try:
         path_bar_data = input('Enter path to file: ')
         bars_data = load_data(path_bar_data)
-        necessary_bar = processing_choose(get_user_choose(), bars_data)
-        if necessary_bar is None:
-            sys.exit('Good bay! See you soon!')
-        else:
-            print(necessary_bar)
+        while True:
+            necessary_bar = processing_choose(get_user_choose(), bars_data)
+            if necessary_bar is None:
+                sys.exit('Good bay! See you soon!')
+            else:
+                print_answer(necessary_bar)
     except FileNotFoundError:
         sys.exit('File on the entered path was not found. '
                  'Check path to file.')
