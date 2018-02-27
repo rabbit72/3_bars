@@ -6,7 +6,7 @@ from math import sqrt
 AVAILABLE_COMMANDS = ['1', '2', '3', 'q']
 
 
-def load_data(file_path):
+def load_data_bars(file_path):
     with open(file_path, encoding='utf8') as file_data:
         return json.loads(file_data.read())
 
@@ -65,7 +65,7 @@ def get_user_coordinates(*arg):
 
 def processing_choose(user_choose, bars_data):
     if user_choose == 'q':
-        return None
+        raise SystemExit
     elif user_choose == '1':
         return get_biggest_bar(bars_data)
     elif user_choose == '2':
@@ -88,15 +88,12 @@ def print_answer(bar):
 if __name__ == '__main__':
     try:
         path_bar_data = input('Enter path to file: ')
-        bars_data = load_data(path_bar_data)
-        while True:
-            necessary_bar = processing_choose(get_user_choose(), bars_data)
-            if necessary_bar is None:
-                sys.exit('Good bay! See you soon!')
-            else:
-                print_answer(necessary_bar)
+        bars_data = load_data_bars(path_bar_data)
+        necessary_bar = processing_choose(get_user_choose(), bars_data)
+        print_answer(necessary_bar)
     except FileNotFoundError:
-        sys.exit('File on the entered path was not found. '
-                 'Check path to file.')
+        sys.exit('File on the entered path was not found')
     except json.decoder.JSONDecodeError:
         sys.exit('File on the entered path not JSON format')
+    except SystemExit:
+        sys.exit('Good bay! See you soon!')
