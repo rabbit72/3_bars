@@ -44,7 +44,7 @@ def get_input_coordinates(*arg):
     return tuple(coordinate_list)
 
 
-def print_answer(bar, description):
+def print_bar(bar, description):
     contacts = bar['properties']['Attributes']
     delimiter = '-' * 50
     print(delimiter)
@@ -63,9 +63,9 @@ if __name__ == '__main__':
         smallest_bar = get_smallest_bar(bars_list)
         longitude, latitude = get_input_coordinates('latitude', 'longitude')
         closest_bar = get_closest_bar(bars_list, longitude, latitude)
-        print_answer(closest_bar, 'closest')
-        print_answer(biggest_bar, 'biggest')
-        print_answer(smallest_bar, 'smallest')
+        print_bar(closest_bar, 'closest')
+        print_bar(biggest_bar, 'biggest')
+        print_bar(smallest_bar, 'smallest')
     except (FileNotFoundError, IndexError):
         sys.exit('File on the entered path was not found')
     except json.decoder.JSONDecodeError:
