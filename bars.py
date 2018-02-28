@@ -40,17 +40,17 @@ def get_input_coordinates(*arg):
         if re.match('^\d+?\.\d+?$', coordinate) is not None:
             coordinate_list.append(float(coordinate))
         else:
-            raise TypeError
-    return tuple(coordinate_list)
+            raise ValueError
+    return coordinate_list
 
 
 def print_bar(bar, description):
-    contacts = bar['properties']['Attributes']
+    bar_attributes = bar['properties']['Attributes']
     delimiter = '-' * 50
     print(delimiter)
     print('Most {2} bar\nName: {0}\nAddress: {1}'.format(
-        contacts['Name'],
-        contacts['Address'],
+        bar_attributes['Name'],
+        bar_attributes['Address'],
         description
     ))
     print(delimiter)
@@ -70,5 +70,5 @@ if __name__ == '__main__':
         sys.exit('File on the entered path was not found')
     except json.decoder.JSONDecodeError:
         sys.exit('File on the entered path not valid JSON format')
-    except TypeError:
+    except ValueError:
         sys.exit('Waiting float number')
