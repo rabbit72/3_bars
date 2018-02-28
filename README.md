@@ -10,8 +10,11 @@ This script use for search bars in Moscow.
 Run on Linux:
 
 ```bash
-$ python3 bars.py <path_to_file_with_text>
+$ python3 bars.py <path_to_file_with_bars>
 ```
+
+You can download [the file with the base of bars.](https://www.dropbox.com/s/o2676ihs8viw052/bars.json?dl=0) 
+
 After running:
 1. Input latitude and longitude
 1. Look at the result
